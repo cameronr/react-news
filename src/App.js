@@ -1,7 +1,6 @@
 import React from 'react';
 import Reflux from 'reflux';
-import PropTypes from 'prop-types';
-import { Switch, Route, Redirect, Link } from 'react-router-dom'
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Actions from './actions/Actions';
 
@@ -19,16 +18,13 @@ import Modal from './components/Modal';
 import Login from './components/Login';
 import Register from './components/Register';
 import NewPost from './components/NewPost';
-import ProfileLink from './components/ProfileLink';
-import add from './svg/add.svg';
 
-import  './scss/main.scss'
+import './scss/main.scss';
 
 class App extends Reflux.Component {
-
   constructor(props) {
     super(props);
-    this.stores = [UserStore, ModalStore]
+    this.stores = [UserStore, ModalStore];
   }
 
   hideModal = (e) => {
@@ -52,23 +48,22 @@ class App extends Reflux.Component {
     let modalInner = null;
     const modalProps = {
       user: this.state,
-      errorMessage: this.state.modalErrorMessage
+      errorMessage: this.state.modalErrorMessage,
     };
 
     switch (this.state.modalType) {
       case 'register':
-        modalInner = <Register { ...modalProps } />; break;
+        modalInner = <Register {...modalProps} />; break;
       case 'login':
-        modalInner = <Login { ...modalProps } />; break;
+        modalInner = <Login {...modalProps} />; break;
       case 'newpost':
-        modalInner = <NewPost { ...modalProps } />; break;
+        modalInner = <NewPost {...modalProps} />; break;
       default:
-        console.log("unknown modal");
         break;
     }
 
     return (
-      <Modal hideModal={ this.hideModal }>
+      <Modal hideModal={this.hideModal}>
         { modalInner }
       </Modal>
     );
@@ -83,27 +78,22 @@ class App extends Reflux.Component {
 
     return (
       <div>
-        <Header user={ user } />
-        <main id="content" className="full-height inner">
+        <Header user={user} />
+        <main id="content" className="container">
           <Switch>
-            <PropsRoute name="posts" exact path="/posts/:pageNum" component={ Posts } user={ user } ignoreScrollBehavior />
-            <PropsRoute name="post" exact path="/post/:postId" component={ SinglePost } user={ user } />
-            <PropsRoute name="profile" exact path="/user/:username" component={ Profile } user={ user } />
-            <Route name="404" exact path="/404" component={ PageNotFound } />
+            <PropsRoute name="posts" exact path="/posts/:pageNum" component={Posts} user={user} ignoreScrollBehavior />
+            <PropsRoute name="post" exact path="/post/:postId" component={SinglePost} user={user} />
+            <PropsRoute name="profile" exact path="/user/:username" component={Profile} user={user} />
+            <Route name="404" exact path="/404" component={PageNotFound} />
             {/* Redirects */}
             <Redirect from="/" to="/posts/1" />
             <Redirect from="*" to="/404" />
           </Switch>
         </main>
-
         { this.getModalComponent() }
       </div>
     );
   }
 }
 
-App.propTypes = {
-  children: PropTypes.object
-}
-
-export default App
+export default App;

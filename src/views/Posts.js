@@ -1,17 +1,22 @@
 import React from 'react';
 import Reflux from 'reflux';
-import Actions from '../actions/Actions';
-import { withRouter } from "react-router-dom";
 import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import {
+  DropdownButton,
+  ListGroup,
+  ListGroupItem,
+  MenuItem,
+} from 'react-bootstrap';
 
+import Actions from '../actions/Actions';
 import PostsStore from '../stores/PostsStore';
 
 import Spinner from '../components/Spinner';
 import Post from '../components/Post';
-import { Link } from 'react-router-dom';
+
 
 class Posts extends Reflux.Component {
-
   constructor(props) {
     super(props);
 
@@ -23,9 +28,9 @@ class Posts extends Reflux.Component {
       posts: postsData.posts,
       sortOptions: postsData.sortOptions,
       nextPage: postsData.nextPage,
-      currentPage: postsData.currentPage
+      currentPage: postsData.currentPage,
     };
-    this.stores = [PostsStore]
+    this.stores = [PostsStore];
   }
 
   componentDidMount() {
@@ -56,17 +61,15 @@ class Posts extends Reflux.Component {
     Actions.stopWatchingPosts();
   }
 
-  updateSortBy = (e) => {
-    e.preventDefault();
+  onSelectSortBy = (sortByValue) => {
     const { sortOptions } = this.state;
     const currentPage = this.state.currentPage || 1;
-    const sortByValue = e.target.value;
 
     // optimistically update selected option
     sortOptions.currentValue = sortByValue;
 
     this.setState({
-      sortOptions: sortOptions
+      sortOptions,
     });
 
     Actions.setSortBy(sortByValue);
@@ -87,53 +90,58 @@ class Posts extends Reflux.Component {
 
     // possible sort values (defined in PostsStore)
     const sortValues = Object.keys(sortOptions.values);
-
     const options = sortValues.map((optionText, i) => (
-      <option value={ sortOptions[i] } key={ i }>{ optionText }</option>
+      <MenuItem key={sortValues[i]} eventKey={sortValues[i]}>{optionText} </MenuItem>
     ));
 
-    const postEls = posts.length
-      ? posts.map((post) => (
-        <Post post={ post } user={ user } key={ post.id } />)
-      )
-      : 'There are no posts yet!';
+    const postItems = posts.length ?
+      posts.map(post => (
+        <ListGroupItem key={post.id}><Post post={post} user={user} /></ListGroupItem>
+      ))
+      :
+      'There are no posts yet!';
 
     return (
-      <div className="content full-width">
-        <label htmlFor="sortby-select" className="sortby-label">Sort by </label>
-        <div className="sortby">
-          <select
-            id="sortby-select"
-            className="sortby-select"
-            onChange={ this.updateSortBy }
-            value={ sortOptions.currentValue }
-            ref="sortBy"
-          >
-            { options }
-          </select>
+      // http://jsfiddle.net/b2m38br9/1/
+      <div className="panel panel-default posts">
+        <div className="panel-heading">
+          <h3 className="panel-title pull-left">
+            Posts
+          </h3>
+          <div className="pull-right">
+            <DropdownButton
+              id="sort-by"
+              title="Sort by"
+              bsSize="small"
+              onSelect={this.onSelectSortBy}
+            >
+              {options}
+            </DropdownButton>
+          </div>
+          <div className="clearfix" />
         </div>
-        <hr />
-        <div className="posts">
-          { loading ? <Spinner /> : postEls }
-        </div>
-        <hr />
-        <nav className="pagination">
-          {
-            nextPage ? (
-              <Link to={ `/posts/${currentPage + 1}` } className="next-page">
-                Load More Posts
-              </Link>
-            ) : 'No More Posts'
+        <ListGroup fill>
+          { loading ? <Spinner /> : postItems }
+        </ListGroup>
+        <div className="panel-footer">
+          { nextPage ? (
+            <Link to={`/posts/${currentPage + 1}`}>
+              Load More Posts
+            </Link>
+          ) : 'No More Posts'
           }
-        </nav>
+        </div>
       </div>
     );
   }
 }
 
 Posts.propTypes = {
-  params: PropTypes.object,
-  user: PropTypes.object.isRequired
-}
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    md5hash: PropTypes.string.optional,
+  }).isRequired,
+};
 
 export default withRouter(Posts);

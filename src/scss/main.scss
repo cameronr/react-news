@@ -29,6 +29,11 @@ $navbar-height: 57px;
 
 //
 // // views
-// @import 'posts';
+
+$dark-gray: #7a8b99;
+$upvoted: #449dd1;
+
+@import 'posts';
+
 // @import 'single-post';
 // @import 'modal';
