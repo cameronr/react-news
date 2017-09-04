@@ -13,12 +13,12 @@ class CommentFormStore extends Reflux.Store {
     this.listenables = Actions;
   }
 
-  commentFormError(errorCode) {
+  commentFormError = (errorCode) => {
     commentFormData.errorMessage = getErrorMessage(errorCode);
     this.trigger(commentFormData);
   }
 
-  clearCommentFormError() {
+  clearCommentFormError = () => {
     commentFormData.errorMessage = '';
     this.trigger(commentFormData);
   }

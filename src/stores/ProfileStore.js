@@ -18,32 +18,35 @@ let data = {
   loading: false
 };
 
-const ProfileStore = Reflux.createStore({
+class ProfileStore extends Reflux.Store {
 
-  listenables: Actions,
+  constructor(props) {
+    super(props);
+    this.listenables = Actions;
+  }
 
-  watchProfile(id) {
+  watchProfile = (id) => {
     data.userId = id;
 
     postListener = postsRef
       .orderByChild('creatorUID')
       .equalTo(data.userId)
       .limitToLast(3)
-      .on('value', this.updatePosts.bind(this));
+      .on('value', this.updatePosts);
 
     commentListener = commentsRef
       .orderByChild('creatorUID')
       .equalTo(data.userId)
       .limitToLast(3)
-      .on('value', this.updateComments.bind(this));
-  },
+      .on('value', this.updateComments);
+  }
 
-  stopWatchingProfile() {
+  stopWatchingProfile = () => {
     postsRef.off('value', postListener);
     commentsRef.off('value', commentListener);
-  },
+  }
 
-  updatePosts(postDataObj) {
+  updatePosts = (postDataObj) => {
     let newPosts = [];
 
     // postDataObj: firebase object with a forEach property
@@ -57,9 +60,9 @@ const ProfileStore = Reflux.createStore({
     data.loading = false;
 
     this.trigger(data);
-  },
+  }
 
-  updateComments(commentDataObj) {
+  updateComments = (commentDataObj) => {
     let newComments = [];
 
     // commentDataObj: firebase object with a forEach property
@@ -73,11 +76,12 @@ const ProfileStore = Reflux.createStore({
     data.loading = false;
 
     this.trigger(data);
-  },
+  }
 
-  getDefaultData() {
+  static getDefaultData() {
     return data;
   }
-});
+
+};
 
 export default ProfileStore;

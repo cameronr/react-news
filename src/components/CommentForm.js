@@ -7,7 +7,7 @@ import CommentFormStore from '../stores/CommentFormStore';
 
 import Spinner from './Spinner';
 
-class CommentForm extends React.Component {
+class CommentForm extends Reflux.Component {
 
   constructor(props) {
     super(props);
@@ -18,7 +18,7 @@ class CommentForm extends React.Component {
       errorMessage: ''
     };
 
-    Reflux.listenTo(CommentFormStore, 'onError')
+    this.store = CommentFormStore;
   }
 
   componentWillReceiveProps(nextProps) {

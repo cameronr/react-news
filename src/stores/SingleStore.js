@@ -13,27 +13,31 @@ let postData = {
   loading: true
 };
 
-const SingleStore = Reflux.createStore({
+class SingleStore extends Reflux.Store {
 
-  listenables: Actions,
+  constructor(props) {
+    super(props);
+    this.listenables = Actions;
+  }
 
-  watchPost(postId) {
+  watchPost = (postId) => {
     postsRef
       .child(postId)
-      .on('value', this.updatePost.bind(this));
+      .on('value', this.updatePost);
 
     commentsRef
       .orderByChild('postId')
       .equalTo(postId)
-      .on('value', this.updateComments.bind(this));
-  },
+      .on('value', this.updateComments);
+  }
 
-  stopWatchingPost(postId) {
+
+  stopWatchingPost = (postId) => {
     postsRef.child(postId).off();
     commentsRef.orderByChild('postId').equalTo(postId).off();
-  },
+  }
 
-  updatePost(postDataObj) {
+  updatePost = (postDataObj) => {
     let post = postDataObj.val();
 
     if (!post) {
@@ -45,9 +49,9 @@ const SingleStore = Reflux.createStore({
     }
 
     this.trigger(postData);
-  },
+  }
 
-  updateComments(commentDataObj) {
+  updateComments = (commentDataObj) => {
     let newComments = [];
 
     commentDataObj.forEach(commentData => {
@@ -60,12 +64,12 @@ const SingleStore = Reflux.createStore({
     postData.loading = false;
 
     this.trigger(postData);
-  },
+  }
 
-  getDefaultData() {
+  static getDefaultData() {
     return postData;
   }
 
-});
+}
 
 export default SingleStore;

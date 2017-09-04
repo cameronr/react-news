@@ -27,32 +27,31 @@ let data = {
   }
 };
 
-const PostsStore = Reflux.createStore({
+class PostsStore extends Reflux.Store {
 
-  listenables: Actions,
+  constructor(props) {
+    super(props);
+    this.listenables = Actions;
+  }
 
-  // init() {
-  //     scrollRef.on('child_added', this.appendPosts);
-  // },
-
-  setSortBy(value) {
+  setSortBy = (value) => {
     data.sortOptions.currentValue = value;
-  },
+  }
 
-  watchPosts(pageNum) {
+  watchPosts = (pageNum) => {
     data.currentPage = +pageNum;
     postsRef
       .orderByChild(sortValues[data.sortOptions.currentValue])
     // +1 extra post to determine whether another page exists
       .limitToLast((data.currentPage * postsPerPage) + 1)
       .on('value', this.updatePosts);
-  },
+  }
 
-  stopWatchingPosts() {
+  stopWatchingPosts = () => {
     postsRef.off();
-  },
+  }
 
-  updatePosts(postDataObj) {
+  updatePosts = (postDataObj) => {
     // newPosts will be all posts through current page + 1
     let endAt = data.currentPage * postsPerPage;
 
@@ -73,12 +72,12 @@ const PostsStore = Reflux.createStore({
     data.loading = false;
 
     this.trigger(data);
-  },
+  }
 
-  getDefaultData() {
+  static getDefaultData() {
     return data;
   }
 
-});
+}
 
 export default PostsStore;
