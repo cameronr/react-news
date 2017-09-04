@@ -4,20 +4,31 @@ Author:     Evan Henley
 Author URI: http://henleyedition.com/
 ====================================== */
 
-@import 'normalize';
-@import 'reset';
+$icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
+$font-size-base: 16px;
+$navbar-height: 57px;
 
-@import 'variables';
-@import 'helpers';
+@import "bootswatch/cerulean/variables";
+@import "bootstrap-sass/assets/stylesheets/bootstrap";
+@import "bootswatch/cerulean/bootswatch";
 
-@import 'structure';
-@import 'general';
 
-// components
-@import 'spinner';
+// @import 'normalize';
+// @import 'reset';
+//
+// @import 'variables';
+// @import 'helpers';
+//
+// @import 'structure';
+// @import 'general';
+//
+// // components
+// @import 'spinner';
+
 @import 'navbar';
 
-// views
-@import 'posts';
-@import 'single-post';
-@import 'modal';
+//
+// // views
+// @import 'posts';
+// @import 'single-post';
+// @import 'modal';

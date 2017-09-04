@@ -7,7 +7,7 @@ const ProfileLink = (props) => {
   const gravatarURI = 'http://www.gravatar.com/avatar/' + md5hash + '?d=mm';
 
   return (
-    <Link to={ `/user/${username}` } className="profile-link">
+    <Link to={ `/user/${username}` } className="">
       <span className="username">{ username }</span>
       <img src={ gravatarURI } className="profile-pic" alt="profile" />
     </Link>

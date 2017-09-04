@@ -13,16 +13,16 @@ import SinglePost from './views/Single';
 import Profile from './views/Profile';
 import PageNotFound from './views/404';
 
-import PropsRoute from './components/PropsRoute.js';
+import Header from './components/Header';
+import PropsRoute from './components/PropsRoute';
 import Modal from './components/Modal';
 import Login from './components/Login';
 import Register from './components/Register';
 import NewPost from './components/NewPost';
-import LoginLinks from './components/LoginLinks';
 import ProfileLink from './components/ProfileLink';
 import add from './svg/add.svg';
 
-import './scss/main.scss';
+import  './scss/main.scss'
 
 class App extends Reflux.Component {
 
@@ -41,7 +41,6 @@ class App extends Reflux.Component {
       Actions.showModal('newpost');
     } else {
       Actions.showModal('login', 'LOGIN_REQUIRED');
-      console.log("show modal");
     }
   }
 
@@ -83,22 +82,8 @@ class App extends Reflux.Component {
     // console.log(this.state);
 
     return (
-      <div className="wrapper full-height">
-        <header className="header cf">
-          <div className="float-left">
-            <Link to="/" className="menu-title">
-              <span>react-news</span>
-            </Link>
-          </div>
-          <div className="float-right">
-            { user.isLoggedIn ? <ProfileLink user={ user } /> : <LoginLinks /> }
-            <a className="newpost-link" onClick={ this.newPost }>
-              <img src={add} alt="add button"/>
-              <span className="sr-only">New Post</span>
-            </a>
-          </div>
-        </header>
-
+      <div>
+        <Header user={ user } />
         <main id="content" className="full-height inner">
           <Switch>
             <PropsRoute name="posts" exact path="/posts/:pageNum" component={ Posts } user={ user } ignoreScrollBehavior />
