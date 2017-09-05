@@ -3,34 +3,40 @@ import PropTypes from 'prop-types';
 import PostLink from './PostLink';
 import PostInfo from './PostInfo';
 
-class Post extends React.Component {
+const Post = (props) => {
+  const { user, post } = props;
 
-  render() {
-    const { user, post } = this.props;
-
-    if (post.isDeleted) {
-      // post doesn't exist
-      return (
-        <div className="post cf">
-          <div className="post-link">
-            [deleted]
-          </div>
-        </div>
-      );
-    }
-
+  if (post.isDeleted) {
+    // post doesn't exist
     return (
-      <div className="post">
-        <PostLink title={ post.title } url={ post.url } />
-        <PostInfo post={ post } user={ user } />
+      <div className="post cf">
+        <div className="post-link">
+          [deleted]
+        </div>
       </div>
     );
   }
-}
+
+  return (
+    <div className="post">
+      <PostLink title={post.title} postId={post.id} url={post.url} />
+      <PostInfo post={post} user={user} />
+    </div>
+  );
+};
 
 Post.propTypes = {
-  user: PropTypes.object.isRequired,
-  post: PropTypes.object.isRequired
-}
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    md5hash: PropTypes.string.optional,
+  }).isRequired,
+  post: PropTypes.shape({
+    id: PropTypes.string.isrequired,
+    upvotes: PropTypes.number.optional,
+    commentCount: PropTypes.number.optional,
+  }).isRequired,
+};
 
 export default Post;

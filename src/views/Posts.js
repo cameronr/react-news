@@ -139,6 +139,7 @@ class Posts extends Reflux.Component {
 Posts.propTypes = {
   user: PropTypes.shape({
     username: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     md5hash: PropTypes.string.optional,
   }).isRequired,

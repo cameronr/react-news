@@ -9,39 +9,46 @@ import PostTimeAgo from './PostTimeAgo';
 import PostCreatorLink from './PostCreatorLink';
 import PostDeleteLink from './PostDeleteLink';
 
-class PostLink extends React.Component {
-  render() {
-    const { user, post } = this.props;
+const PostLink = (props) => {
+  const { user, post } = props;
 
-    let userUpvoted = user.upvoted || {};
-    let creatorIsLoggedIn = user.uid === post.creatorUID;
+  const userUpvoted = user.upvoted || {};
+  const creatorIsLoggedIn = user.uid === post.creatorUID;
 
-    let upvoteActions = {
-      upvote: Actions.upvotePost,
-      downvote: Actions.downvotePost
-    };
+  const upvoteActions = {
+    upvote: Actions.upvotePost,
+    downvote: Actions.downvotePost,
+  };
 
-    return (
-      <div className="post-info">
-        <Upvote
-          upvoteActions={ upvoteActions }
-          user={ user }
-          itemId={ post.id }
-          isUpvoted={ !!userUpvoted[post.id] }
-          upvotes={ post.upvotes || 0 }
-        />
-        <PostCreatorLink creator={ post.creator } />
-        <PostTimeAgo time={ post.time } />
-        <PostCommentsLink id={ post.id } commentCount={ post.commentCount || 0 } />
-        { creatorIsLoggedIn && <PostDeleteLink post={ post } /> }
-      </div>
-    );
-  }
-}
+  return (
+    <div className="post-info">
+      <Upvote
+        upvoteActions={upvoteActions}
+        user={user}
+        itemId={post.id}
+        isUpvoted={!!userUpvoted[post.id]}
+        upvotes={post.upvotes || 0}
+      />
+      <PostCreatorLink creator={post.creator} />
+      <PostTimeAgo time={post.time} />
+      <PostCommentsLink id={post.id} commentCount={post.commentCount || 0} />
+      { creatorIsLoggedIn && <PostDeleteLink post={post} /> }
+    </div>
+  );
+};
 
 PostLink.propTypes = {
-  user: PropTypes.object.isRequired,
-  post: PropTypes.object.isRequired
-}
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    md5hash: PropTypes.string.optional,
+  }).isRequired,
+  post: PropTypes.shape({
+    id: PropTypes.string.isrequired,
+    upvotes: PropTypes.number.optional,
+    commentCount: PropTypes.number.optional,
+  }).isRequired,
+};
 
 export default PostLink;

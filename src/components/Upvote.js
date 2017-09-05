@@ -11,7 +11,7 @@ class Upvote extends React.Component {
     // TODO: maybe this shouldn't have state at all?
     this.state = {
       updating: false,
-      upvoted: this.props.isUpvoted
+      upvoted: this.props.isUpvoted,
     };
   }
 
@@ -26,7 +26,7 @@ class Upvote extends React.Component {
 
     this.setState({
       updating: false,
-      upvoted: nextProps.isUpvoted
+      upvoted: nextProps.isUpvoted,
     });
   }
 
@@ -43,14 +43,14 @@ class Upvote extends React.Component {
       return;
     }
 
-    let upvoteAction = upvoted
+    const upvoteAction = upvoted
       ? upvoteActions.downvote
       : upvoteActions.upvote;
 
     this.setState({
       upvoted: !upvoted,
       // wait for action to complete before allowing upvote
-      updating: true
+      updating: true,
     });
 
     upvoteAction(user.uid, itemId);
@@ -60,15 +60,15 @@ class Upvote extends React.Component {
     const { upvoted, updating } = this.state;
     const { upvotes } = this.props;
 
-    let upvoteCx = cx('upvote', {
-      'upvoted': upvoted,
-      'updating': updating
+    const upvoteCx = cx('upvote', {
+      upvoted,
+      updating,
     });
 
     return (
-      <a className={ upvoteCx } onClick={ this.upvote }>
+      <a className={upvoteCx} onClick={this.upvote} role="button">
         <span>{ abbreviateNumber(upvotes) }</span>
-        <img src={ require('../svg/upvote.svg') } alt="Upvote" />
+        <img src={require('../svg/upvote.svg')} alt="Upvote" />
       </a>
     );
   }
@@ -76,10 +76,18 @@ class Upvote extends React.Component {
 
 Upvote.propTypes = {
   isUpvoted: PropTypes.bool.isRequired,
-  user: PropTypes.object,
-  itemId: PropTypes.string,
-  upvoteActions: PropTypes.object,
-  upvotes: PropTypes.number
-}
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    md5hash: PropTypes.string.optional,
+  }).isRequired,
+  itemId: PropTypes.string.isRequired,
+  upvoteActions: PropTypes.shape({
+    upvote: PropTypes.func.isRequired,
+    downvote: PropTypes.func.isRequired,
+  }).isRequired,
+  upvotes: PropTypes.number.isRequired,
+};
 
 export default Upvote;
