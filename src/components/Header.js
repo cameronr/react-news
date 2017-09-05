@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Nav, Navbar, NavItem } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 import Actions from '../actions/Actions';
 
@@ -18,10 +19,12 @@ const Header = (props) => {
     const gravatarURI = 'http://www.gravatar.com/avatar/{props.user.md5hash}?d=mm';
 
     rightNav.push(
-      <NavItem key="profile">
-        <span className="username">{props.user.username}</span>
-        <img src={gravatarURI} className="profile-pic" alt="profile" />
-      </NavItem>,
+      <LinkContainer to={`/user/${props.user.username}`} key="profile">
+        <NavItem>
+          <span className="username">{props.user.username}</span>
+          <img src={gravatarURI} className="profile-pic" alt="profile" />
+        </NavItem>
+      </LinkContainer>,
     );
     rightNav.push(<NavItem key="newpost" onSelect={() => Actions.showModal('newpost')} >+</NavItem>);
   }

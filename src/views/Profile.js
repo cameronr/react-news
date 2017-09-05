@@ -2,7 +2,7 @@ import React from 'react';
 import Reflux from 'reflux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Panel } from 'react-bootstrap';
+import { Button, Panel } from 'react-bootstrap';
 
 import Actions from '../actions/Actions';
 
@@ -95,29 +95,31 @@ class Profile extends Reflux.Component {
     }
 
     const userOptions = user.uid === profileData.userId && user.uid !== '' && (
-      <div className="user-options text-right">
-        <button
-          onClick={this.logout}
-          className="button button-primary"
-        >
+      <div className="text-right-sm">
+        <Button onClick={this.logout}>
           Sign Out
-        </button>
-        <hr />
+        </Button>
       </div>
     );
 
     return (
       <Panel className="profile">
-        <h1 className="panel-body-top">
-          { `${userProfile}'s` } Profile
-        </h1>
-        { userOptions }
+        <div className="row divider">
+          <div className="col-12 col-sm-8">
+            <h1 className="panel-body-top">
+              { `${userProfile}'s` } Profile
+            </h1>
+          </div>
+          <div className="col-12 col-sm-4">
+            { userOptions }
+          </div>
+        </div>
         <div className="user-posts">
-          <h3>Posts</h3>
+          <h3 className="section-header">Posts</h3>
           { postList }
         </div>
         <div className="user-comments">
-          <h3>Comments</h3>
+          <h3 className="section-header">Comments</h3>
           { commentList }
         </div>
       </Panel>

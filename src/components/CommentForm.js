@@ -1,6 +1,7 @@
 import React from 'react';
 import Reflux from 'reflux';
 import PropTypes from 'prop-types';
+import { Button, FormControl, FormGroup } from 'react-bootstrap';
 
 import Actions from '../actions/Actions';
 import CommentFormStore from '../stores/CommentFormStore';
@@ -8,28 +9,27 @@ import CommentFormStore from '../stores/CommentFormStore';
 import Spinner from './Spinner';
 
 class CommentForm extends Reflux.Component {
-
   constructor(props) {
     super(props);
 
     this.state = {
       submitted: false,
       commentText: '',
-      errorMessage: ''
+      errorMessage: '',
     };
 
     this.store = CommentFormStore;
   }
 
   componentWillReceiveProps(nextProps) {
-    let oldUserSubmitted = this.props.user.submitted;
-    let newUserSubmitted = nextProps.user.submitted;
+    const oldUserSubmitted = this.props.user.submitted;
+    const newUserSubmitted = nextProps.user.submitted;
 
     if (oldUserSubmitted !== newUserSubmitted) {
       // clear form if user's comment comes through
       this.setState({
         commentText: '',
-        submitted: false
+        submitted: false,
       });
     }
   }
@@ -37,14 +37,14 @@ class CommentForm extends Reflux.Component {
   onError(commentFormData) {
     this.setState({
       errorMessage: commentFormData.errorMessage,
-      submitted: false
+      submitted: false,
     });
   }
 
   addComment = (e) => {
     e.preventDefault();
-    let { commentText } = this.state;
-    let { user, post } = this.props;
+    const { commentText } = this.state;
+    const { user, post } = this.props;
 
     if (!user.isLoggedIn) {
       return Actions.showModal('login', 'LOGIN_REQUIRED');
@@ -55,45 +55,48 @@ class CommentForm extends Reflux.Component {
     }
 
     this.setState({
-      submitted: true
+      submitted: true,
     });
 
-    let comment = {
+    const comment = {
       postId: post.id,
       postTitle: post.title,
       text: commentText.trim(),
       creator: user.username,
       creatorUID: user.uid,
-      time: Date.now()
+      time: Date.now(),
     };
 
     Actions.addComment(comment);
+    return null;
   }
 
   render() {
-    let {
+    const {
       commentText,
       submitted,
-      errorMessage
+      errorMessage,
     } = this.state;
 
-    let error = errorMessage && (
+    const error = errorMessage && (
       <div className="comment-error error">{ errorMessage }</div>
     );
 
     return (
       <div>
-        <form className="comment-form" onSubmit={ this.addComment }>
-          <textarea
-            placeholder="Post a Comment"
-            ref="commentText"
-            className="comment-input full-width"
-            value={ commentText }
-            onChange={ (e) => this.setState({ commentText: e.target.value }) }
-          />
-          <button type="submit" className="button button-primary" disabled={ submitted }>
+        <form onSubmit={this.addComment}>
+          <FormGroup controlId="formControlsTextarea">
+            <FormControl
+              componentClass="textarea"
+              placeholder="Post a comment"
+              value={commentText}
+              onChange={e => this.setState({ commentText: e.target.value })}
+            />
+          </FormGroup>
+
+          <Button type="submit">
             { submitted ? <Spinner /> : 'Submit' }
-          </button>
+          </Button>
         </form>
         { error }
       </div>
@@ -102,9 +105,18 @@ class CommentForm extends Reflux.Component {
 }
 
 CommentForm.propTypes = {
-  user: PropTypes.object,
-  post: PropTypes.object,
-  errorMessage: PropTypes.string
-}
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    md5hash: PropTypes.string.optional,
+  }).isRequired,
+  post: PropTypes.shape({
+    id: PropTypes.string.isrequired,
+    upvotes: PropTypes.number.optional,
+    commentCount: PropTypes.number.optional,
+  }).isRequired,
+  errorMessage: PropTypes.string,
+};
 
 export default CommentForm;

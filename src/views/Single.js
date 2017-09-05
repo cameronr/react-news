@@ -1,7 +1,8 @@
 import React from 'react';
 import Reflux from 'reflux';
 import PropTypes from 'prop-types';
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
+import { Panel } from 'react-bootstrap';
 
 import SingleStore from '../stores/SingleStore';
 import Actions from '../actions/Actions';
@@ -13,16 +14,15 @@ import CommentForm from '../components/CommentForm';
 import pluralize from '../util/pluralize';
 
 class SinglePost extends Reflux.Component {
-
   constructor(props) {
     super(props);
     // TODO: should post be a prop instead?
     this.state = {
       post: null,
       comments: [],
-      loading: true
+      loading: true,
     };
-    this.stores = [SingleStore]
+    this.stores = [SingleStore];
   }
 
   componentDidMount() {
@@ -37,7 +37,7 @@ class SinglePost extends Reflux.Component {
     if (newPostId !== oldPostId) {
       // TODO: shouldn't be setting state here
       this.setState({
-        loading: true
+        loading: true,
       });
 
       Actions.stopWatchingPost(oldPostId);
@@ -61,15 +61,15 @@ class SinglePost extends Reflux.Component {
     if (loading) {
       content = <Spinner />;
     } else {
-      let commentComponents = comments.map(comment => (
-        <Comment comment={ comment } user={ user } key={ comment.id } />
+      const commentComponents = comments.map(comment => (
+        <Comment comment={comment} user={user} key={comment.id} />
       ));
 
       content = (
         <div>
-          <Post post={ post } user={ user } key={ postId } />
+          <Post post={post} user={user} key={postId} showCommentsLink={false} />
           <div className="comments">
-            <h2>{ pluralize(comments.length, 'Comment') }</h2>
+            <h4 className="divider">{ pluralize(comments.length, 'Comment') }</h4>
             { commentComponents }
           </div>
         </div>
@@ -77,20 +77,24 @@ class SinglePost extends Reflux.Component {
     }
 
     return (
-      <div className="content full-width">
+      <Panel className="single-post">
         { content }
         <CommentForm
-          user={ user }
-          post={ post || {} }
+          user={user}
+          post={post || {}}
         />
-      </div>
+      </Panel>
     );
   }
 }
 
 SinglePost.propTypes = {
-  params: PropTypes.object,
-  user: PropTypes.object.isRequired
-}
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    md5hash: PropTypes.string.optional,
+  }).isRequired,
+};
 
 export default withRouter(SinglePost);

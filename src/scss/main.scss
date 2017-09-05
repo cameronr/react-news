@@ -20,11 +20,11 @@ $navbar-height: 57px;
 // @import 'helpers';
 //
 // @import 'structure';
-// @import 'general';
 //
 // // components
 // @import 'spinner';
 
+@import 'general';
 @import 'navbar';
 
 //
@@ -32,9 +32,11 @@ $navbar-height: 57px;
 
 $dark-gray: #7a8b99;
 $upvoted: #449dd1;
+$small: 1rem;
+$medium: 2rem;
+$large: 3rem;
 
 @import 'posts';
 @import 'profile';
-
-// @import 'single-post';
+@import 'single-post';
 // @import 'modal';

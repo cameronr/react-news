@@ -4,7 +4,7 @@ import PostLink from './PostLink';
 import PostInfo from './PostInfo';
 
 const Post = (props) => {
-  const { user, post } = props;
+  const { user, post, showCommentsLink } = props;
 
   if (post.isDeleted) {
     // post doesn't exist
@@ -20,7 +20,7 @@ const Post = (props) => {
   return (
     <div className="post">
       <PostLink title={post.title} postId={post.id} url={post.url} />
-      <PostInfo post={post} user={user} />
+      <PostInfo post={post} user={user} showCommentsLink={showCommentsLink} />
     </div>
   );
 };
@@ -37,6 +37,11 @@ Post.propTypes = {
     upvotes: PropTypes.number.optional,
     commentCount: PropTypes.number.optional,
   }).isRequired,
+  showCommentsLink: PropTypes.bool,
+};
+
+Post.defaultProps = {
+  showCommentsLink: true,
 };
 
 export default Post;

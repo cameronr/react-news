@@ -9,8 +9,8 @@ import PostTimeAgo from './PostTimeAgo';
 import PostCreatorLink from './PostCreatorLink';
 import PostDeleteLink from './PostDeleteLink';
 
-const PostLink = (props) => {
-  const { user, post } = props;
+const PostInfo = (props) => {
+  const { user, post, showCommentsLink } = props;
 
   const userUpvoted = user.upvoted || {};
   const creatorIsLoggedIn = user.uid === post.creatorUID;
@@ -31,13 +31,13 @@ const PostLink = (props) => {
       />
       <PostCreatorLink creator={post.creator} />
       <PostTimeAgo time={post.time} />
-      <PostCommentsLink id={post.id} commentCount={post.commentCount || 0} />
+      { showCommentsLink ? <PostCommentsLink id={post.id} commentCount={post.commentCount || 0} /> : '' }
       { creatorIsLoggedIn && <PostDeleteLink post={post} /> }
     </div>
   );
 };
 
-PostLink.propTypes = {
+PostInfo.propTypes = {
   user: PropTypes.shape({
     username: PropTypes.string.isRequired,
     uid: PropTypes.string.isRequired,
@@ -49,6 +49,11 @@ PostLink.propTypes = {
     upvotes: PropTypes.number.optional,
     commentCount: PropTypes.number.optional,
   }).isRequired,
+  showCommentsLink: PropTypes.bool,
 };
 
-export default PostLink;
+PostInfo.defaultProps = {
+  showCommentsLink: true,
+};
+
+export default PostInfo;
