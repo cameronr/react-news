@@ -1,7 +1,8 @@
 import React from 'react';
 import Reflux from 'reflux';
 import PropTypes from 'prop-types';
-import { withRouter } from "react-router-dom";
+import { withRouter } from 'react-router-dom';
+import { Panel } from 'react-bootstrap';
 
 import Actions from '../actions/Actions';
 
@@ -17,13 +18,13 @@ class Profile extends Reflux.Component {
     super(props);
     this.state = {
       profileData: ProfileStore.getDefaultData(),
-      loading: true
+      loading: true,
     };
-    this.stores = [ProfileStore]
+    this.stores = [ProfileStore];
   }
 
   componentDidMount() {
-    let username = this.props.match.params.username;
+    const username = this.props.match.params.username;
 
     // watch posts/comments for username in url
     UserStore.getUserId(username)
@@ -31,12 +32,12 @@ class Profile extends Reflux.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    let oldUsername = this.props.match.params.username;
-    let newUsername = nextProps.match.params.username;
+    const oldUsername = this.props.match.params.username;
+    const newUsername = nextProps.match.params.username;
 
     if (oldUsername !== newUsername) {
       this.setState({
-        loading: true
+        loading: true,
       });
 
       Actions.stopWatchingProfile();
@@ -56,44 +57,47 @@ class Profile extends Reflux.Component {
   }
 
   render() {
-    let { profileData, loading } = this.state;
-    let { user } = this.props;
-    let posts = profileData.posts;
-    let comments = profileData.comments;
+    const { profileData, loading } = this.state;
+    const { user } = this.props;
+    const posts = profileData.posts;
+    const comments = profileData.comments;
+    const userProfile = this.props.match.params.username;
 
-    let postList, commentList, postHeader, commentsHeader;
+    let postList;
+    let commentList;
 
     if (loading) {
-      postHeader = <h2>Loading Posts...</h2>;
       postList = <Spinner />;
-      commentsHeader = <h2>Loading Comments...</h2>;
       commentList = <Spinner />;
     } else {
-      postHeader = <h2>{ posts.length ? 'Latest' : 'No'} Posts</h2>;
-      commentsHeader = <h2>{ comments.length ? 'Latest' : 'No'} Comments</h2>;
-
       postList = posts.map(post => (
         <Post
-          post={ post }
-          user={ user }
-          key={ post.id }
+          post={post}
+          user={user}
+          key={post.id}
         />
       ));
+      if (!postList.length) {
+        postList = 'No posts';
+      }
 
       commentList = comments.map(comment => (
         <Comment
           showPostTitle
-          comment={ comment }
-          user={ user }
-          key={ comment.id }
+          comment={comment}
+          user={user}
+          key={comment.id}
         />
       ));
+      if (!commentList.length) {
+        commentList = 'No comments';
+      }
     }
 
-    let userOptions = user.uid === profileData.userId && user.uid !== "" && (
+    const userOptions = user.uid === profileData.userId && user.uid !== '' && (
       <div className="user-options text-right">
         <button
-          onClick={ this.logout }
+          onClick={this.logout}
           className="button button-primary"
         >
           Sign Out
@@ -103,26 +107,31 @@ class Profile extends Reflux.Component {
     );
 
     return (
-      <div className="content full-width">
+      <Panel className="profile">
+        <h1 className="panel-body-top">
+          { `${userProfile}'s` } Profile
+        </h1>
         { userOptions }
-        <h1>{ this.props.match.params.username + '\'s' } Profile</h1>
         <div className="user-posts">
-          { postHeader }
+          <h3>Posts</h3>
           { postList }
         </div>
         <div className="user-comments">
-          { commentsHeader }
+          <h3>Comments</h3>
           { commentList }
         </div>
-      </div>
+      </Panel>
     );
   }
-
 }
 
 Profile.propTypes = {
-  params: PropTypes.object,
-  user: PropTypes.object.isRequired
-}
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    md5hash: PropTypes.string.optional,
+  }).isRequired,
+};
 
 export default withRouter(Profile);

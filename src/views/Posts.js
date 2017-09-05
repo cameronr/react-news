@@ -83,7 +83,6 @@ class Posts extends Reflux.Component {
   }
 
   render() {
-    // TODO: break into components: sortDropDown, postsList, nav component
     const { loading, nextPage, posts, sortOptions } = this.state;
     const { user } = this.props;
     const currentPage = this.state.currentPage || 1;
