@@ -1,9 +1,10 @@
 import Reflux from 'reflux';
 import Firebase from 'firebase';
-import { firebaseUrl } from '../util/constants';
 
 // used to create email hash for gravatar
 import md5 from 'md5';
+
+import { firebaseUrl } from '../util/constants';
 
 const baseRef = new Firebase(firebaseUrl);
 const commentsRef = baseRef.child('comments');
@@ -41,7 +42,7 @@ const Actions = Reflux.createActions([
   // modal actions
   'showModal',
   'hideModal',
-  'modalError'
+  'modalError',
 ]);
 
 /* User Actions
@@ -54,9 +55,9 @@ Actions.login.listen((loginData) => {
 });
 
 function createUser(username, loginData) {
-  let profile = {
-    username: username,
-    md5hash: md5(loginData.email)
+  const profile = {
+    username,
+    md5hash: md5(loginData.email),
   };
 
   baseRef.createUser(loginData, (error, userData) => {
@@ -89,10 +90,10 @@ Actions.register.listen((username, loginData) => {
 =============================== */
 
 Actions.submitPost.listen(function(post) {
-  let newPostRef = postsRef.push(post, (error) => {
+  const newPostRef = postsRef.push(post, (error) => {
     if (error) { return Actions.modalError(error); }
 
-    let postId = newPostRef.key();
+    const postId = newPostRef.key();
     // add commentId to user's profile
     usersRef
       .child(`${post.creatorUID}/submitted/${postId}`)
@@ -184,7 +185,7 @@ function updateCommentCount(postId, n) {
 }
 
 Actions.addComment.listen((comment) => {
-  let newCommentRef = commentsRef.push(comment, (error) => {
+  const newCommentRef = commentsRef.push(comment, (error) => {
     if (error) {
       return Actions.commentFormError('COMMENT_FAILED');
     }

@@ -14,7 +14,7 @@ import PageNotFound from './views/404';
 
 import Header from './components/Header';
 import PropsRoute from './components/PropsRoute';
-import Modal from './components/Modal';
+import ModalWrapper from './components/ModalWrapper';
 import Login from './components/Login';
 import Register from './components/Register';
 import NewPost from './components/NewPost';
@@ -27,7 +27,7 @@ class App extends Reflux.Component {
     this.stores = [UserStore, ModalStore];
   }
 
-  hideModal = (e) => {
+  onHideModal = (e) => {
     if (e) { e.preventDefault(); }
     Actions.hideModal();
   }
@@ -46,26 +46,35 @@ class App extends Reflux.Component {
     }
 
     let modalInner = null;
+    let title = null;
+
     const modalProps = {
       user: this.state,
+      onHide: this.onHideModal,
       errorMessage: this.state.modalErrorMessage,
     };
 
     switch (this.state.modalType) {
       case 'register':
-        modalInner = <Register {...modalProps} />; break;
+        modalInner = <Register {...modalProps} />;
+        title = 'Register';
+        break;
       case 'login':
-        modalInner = <Login {...modalProps} />; break;
+        modalInner = <Login {...modalProps} />;
+        title = 'Sign In';
+        break;
       case 'newpost':
-        modalInner = <NewPost {...modalProps} />; break;
+        modalInner = <NewPost {...modalProps} />;
+        title = 'Submit a new post';
+        break;
       default:
         break;
     }
 
     return (
-      <Modal hideModal={this.hideModal}>
-        { modalInner }
-      </Modal>
+      <ModalWrapper title={title} onHide={this.onHideModal}>
+        {modalInner}
+      </ModalWrapper>
     );
   }
 
