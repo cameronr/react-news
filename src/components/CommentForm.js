@@ -2,11 +2,11 @@ import React from 'react';
 import Reflux from 'reflux';
 import PropTypes from 'prop-types';
 import { Button, FormControl, FormGroup } from 'react-bootstrap';
+import Spinner from 'react-spinner';
 
 import Actions from '../actions/Actions';
 import CommentFormStore from '../stores/CommentFormStore';
 
-import Spinner from './Spinner';
 
 class CommentForm extends Reflux.Component {
   constructor(props) {
@@ -94,7 +94,7 @@ class CommentForm extends Reflux.Component {
             />
           </FormGroup>
 
-          <Button type="submit">
+          <Button type="submit" className="pull-right">
             { submitted ? <Spinner /> : 'Submit' }
           </Button>
         </form>

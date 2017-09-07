@@ -2,6 +2,7 @@ import React from 'react';
 import Reflux from 'reflux';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
+import Spinner from 'react-spinner';
 import {
   DropdownButton,
   ListGroup,
@@ -12,7 +13,6 @@ import {
 import Actions from '../actions/Actions';
 import PostsStore from '../stores/PostsStore';
 
-import Spinner from '../components/Spinner';
 import Post from '../components/Post';
 
 
@@ -120,7 +120,7 @@ class Posts extends Reflux.Component {
           <div className="clearfix" />
         </div>
         <ListGroup fill>
-          { loading ? <Spinner /> : postItems }
+          {loading ? <Spinner /> : postItems}
         </ListGroup>
         <div className="panel-footer">
           { nextPage ? (

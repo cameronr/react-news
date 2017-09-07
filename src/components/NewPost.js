@@ -1,19 +1,20 @@
 import React from 'react';
+import Reflux from 'reflux';
 import PropTypes from 'prop-types';
-import { withRouter } from "react-router-dom";
-import cx from 'classnames';
+import { withRouter } from 'react-router-dom';
+import { Alert, Button, Modal } from 'react-bootstrap';
+import Spinner from 'react-spinner';
 
 import Actions from '../actions/Actions';
-import Spinner from '../components/Spinner';
+import FieldGroup from '../components/FieldGroup';
 
-class NewPost extends React.Component {
-
+class NewPost extends Reflux.Component {
   constructor(props) {
     super(props);
     this.state = {
       submitted: false,
       title: '',
-      link: ''
+      link: '',
     };
   }
 
@@ -23,11 +24,12 @@ class NewPost extends React.Component {
 
     if (oldLatestPost !== newLatestPost) {
       // user just submitted a new post
-      return this.submitPostCompleted(newLatestPost);
+      this.submitPostCompleted(newLatestPost);
+      return;
     }
 
     this.setState({
-      submitted: false
+      submitted: false,
     });
   }
 
@@ -36,7 +38,7 @@ class NewPost extends React.Component {
     this.setState({
       title: '',
       link: '',
-      submitted: false
+      submitted: false,
     });
 
     // hide modal/redirect to the new post
@@ -44,28 +46,22 @@ class NewPost extends React.Component {
     this.props.history.push(`/post/${postId}`);
   }
 
-  submitPost = (e) => {
+  onKeyPress = (e) => {
+    // prevent submission on form eneter
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.onRegister(e);
+    }
+  }
+
+  onSubmitPost = (e) => {
     e.preventDefault();
 
     const { title, link } = this.state;
     const { user } = this.props;
 
-    if (!title) {
-      this.setState({
-        highlight: 'title'
-      });
-      return;
-    }
-
-    if (!link) {
-      this.setState({
-        highlight: 'link'
-      });
-      return;
-    }
-
     this.setState({
-      submitted: true
+      submitted: true,
     });
 
     const post = {
@@ -73,63 +69,68 @@ class NewPost extends React.Component {
       url: link,
       creator: user.username,
       creatorUID: user.uid,
-      time: Date.now()
+      time: Date.now(),
     };
 
     Actions.submitPost(post);
   }
 
   render() {
-    const { submitted, highlight, title, link } = this.state;
-
-    const titleInputCx = cx('panel-input', {
-      'input-error': highlight === 'title'
-    });
-
-    const linkInputCx = cx('panel-input', {
-      'input-error': highlight === 'link'
-    });
+    const { submitted, title, link } = this.state;
 
     const errorMessage = this.props.errorMessage;
     const error = errorMessage && (
-      <div className="error modal-form-error">{ errorMessage }</div>
+      <Alert bsStyle="danger">{ errorMessage }</Alert>
     );
 
     return (
-      <div className="newpost">
-        <h1>New Post</h1>
-        <form onSubmit={ this.submitPost } className="modal-form">
-          <label htmlFor="newpost-title">Title</label>
-          <input
+      <div>
+        <Modal.Body>
+          { error }
+          <FieldGroup
+            id="title"
             type="text"
-            className={ titleInputCx }
-            placeholder="Title"
-            id="newpost-title"
-            value={ title }
-            onChange={ (e) => this.setState({ title: e.target.value }) }
+            label="Title"
+            placeholder="Title of the post"
+            value={title}
+            onChange={e => this.setState({ title: e.target.value })}
+            onKeyPress={this.onKeyPress}
           />
-          <label htmlFor="newpost-url">Link</label>
-          <input
+          <FieldGroup
+            id="link"
             type="text"
-            className={ linkInputCx }
+            label="Link"
             placeholder="Link"
-            id="newpost-url"
-            value={ link }
-            onChange={ (e) => this.setState({ link: e.target.value.trim() }) }
+            value={link}
+            onChange={e => this.setState({ link: e.target.value.trim() })}
+            onKeyPress={this.onKeyPress}
           />
-          <button type="submit" className="button button-primary" disabled={ submitted }>
-            { submitted ? <Spinner /> : 'Submit' }
-          </button>
-        </form>
-        { error }
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.props.onHide}>Cancel</Button>
+          <Button bsStyle="primary" onClick={this.onSubmitPost} disabled={submitted}>
+            { submitted ? <Spinner /> : 'Post' }
+          </Button>
+        </Modal.Footer>
       </div>
     );
   }
 }
 
 NewPost.propTypes = {
-  user: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string
-}
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    md5hash: PropTypes.string.optional,
+    latestPost: PropTypes.string.optional,
+  }).isRequired,
+  errorMessage: PropTypes.string,
+};
+
+NewPost.defaultProps = {
+  md5hash: null,
+  latestPost: null,
+};
 
 export default withRouter(NewPost);

@@ -8,10 +8,17 @@ $icon-font-path: "~bootstrap-sass/assets/fonts/bootstrap/";
 $font-size-base: 16px;
 $navbar-height: 57px;
 
-@import "bootswatch/cerulean/variables";
-@import "bootstrap-sass/assets/stylesheets/bootstrap";
-@import "bootswatch/cerulean/bootswatch";
+$dark: #040203;
+$dark-gray: #7a8b99;
+$upvoted: #449dd1;
+$small: 1rem;
+$medium: 2rem;
+$large: 3rem;
 
+@import 'bootswatch/cerulean/variables';
+@import 'bootstrap-sass/assets/stylesheets/bootstrap';
+@import 'bootswatch/cerulean/bootswatch';
+@import 'react-spinner/react-spinner';
 
 // @import 'normalize';
 // @import 'reset';
@@ -22,21 +29,13 @@ $navbar-height: 57px;
 // @import 'structure';
 //
 // // components
-// @import 'spinner';
+@import 'spinner';
 
 @import 'general';
 @import 'navbar';
 
-//
-// // views
 
-$dark-gray: #7a8b99;
-$upvoted: #449dd1;
-$small: 1rem;
-$medium: 2rem;
-$large: 3rem;
-
+// views
 @import 'posts';
 @import 'profile';
 @import 'single-post';
-// @import 'modal';

@@ -3,10 +3,10 @@ import Reflux from 'reflux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Panel } from 'react-bootstrap';
+import Spinner from 'react-spinner';
 
 import SingleStore from '../stores/SingleStore';
 import Actions from '../actions/Actions';
-import Spinner from '../components/Spinner';
 import Post from '../components/Post';
 import Comment from '../components/Comment';
 import CommentForm from '../components/CommentForm';

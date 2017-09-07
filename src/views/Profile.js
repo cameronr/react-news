@@ -3,13 +3,13 @@ import Reflux from 'reflux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { Button, Panel } from 'react-bootstrap';
+import Spinner from 'react-spinner';
 
 import Actions from '../actions/Actions';
 
 import UserStore from '../stores/UserStore';
 import ProfileStore from '../stores/ProfileStore';
 
-import Spinner from '../components/Spinner';
 import Post from '../components/Post';
 import Comment from '../components/Comment';
 

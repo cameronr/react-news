@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Button, Modal } from 'react-bootstrap';
+import Spinner from 'react-spinner';
 
 import Actions from '../actions/Actions';
 import FieldGroup from '../components/FieldGroup';
-import Spinner from '../components/Spinner';
 
 class Register extends React.Component {
   constructor(props) {
@@ -58,7 +58,6 @@ class Register extends React.Component {
     }
   }
 
-
   clearForm = () => {
     this.setState({
       username: '',
@@ -110,7 +109,7 @@ class Register extends React.Component {
         <Modal.Footer>
           <Button onClick={this.props.onHide}>Cancel</Button>
           <Button bsStyle="primary" onClick={this.onRegister} disabled={submitted}>
-            Register
+            { submitted ? <Spinner /> : 'Register' }
           </Button>
         </Modal.Footer>
       </div>

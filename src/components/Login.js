@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Alert, Button, Modal } from 'react-bootstrap';
+import Spinner from 'react-spinner';
 
 import Actions from '../actions/Actions';
 import FieldGroup from '../components/FieldGroup';
@@ -90,7 +91,7 @@ class Login extends React.Component {
         <Modal.Footer>
           <Button onClick={this.props.onHide}>Cancel</Button>
           <Button bsStyle="primary" onClick={this.onLogin} disabled={submitted}>
-            Sign In
+            { submitted ? <Spinner /> : 'Sign In' }
           </Button>
         </Modal.Footer>
       </div>
