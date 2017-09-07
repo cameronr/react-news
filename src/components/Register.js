@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Alert, Button, Modal } from 'react-bootstrap';
+
 import Actions from '../actions/Actions';
+import FieldGroup from '../components/FieldGroup';
 import Spinner from '../components/Spinner';
 
 class Register extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -12,7 +14,7 @@ class Register extends React.Component {
       submitted: false,
       username: '',
       email: '',
-      password: ''
+      password: '',
     };
   }
 
@@ -24,19 +26,11 @@ class Register extends React.Component {
 
     // allow resubmission if error comes through
     this.setState({
-      submitted: false
+      submitted: false,
     });
   }
 
-  clearForm = () => {
-    this.setState({
-      username: '',
-      email: '',
-      password: ''
-    });
-  }
-
-  registerUser = (e) => {
+  onRegister = (e) => {
     e.preventDefault();
     const { username, email, password } = this.state;
 
@@ -45,67 +39,98 @@ class Register extends React.Component {
     }
 
     this.setState({
-      submitted: true
+      submitted: true,
     });
 
     const loginData = {
-      email: email,
-      password: password
+      email,
+      password,
     };
 
-    Actions.register(username, loginData);
+    return Actions.register(username, loginData);
   }
+
+  onKeyPress = (e) => {
+    // prevent submission on form eneter
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      this.onRegister(e);
+    }
+  }
+
+
+  clearForm = () => {
+    this.setState({
+      username: '',
+      email: '',
+      password: '',
+    });
+  }
+
 
   render() {
     const { submitted, username, email, password } = this.state;
     const { errorMessage } = this.props;
 
     const error = errorMessage && (
-      <div className="error modal-form-error">{ errorMessage }</div>
+      <Alert bsStyle="danger">{ errorMessage }</Alert>
     );
 
     return (
-      <div className="register">
-        <h1>Register</h1>
-        <form onSubmit={ this.registerUser } className="modal-form">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            placeholder="Username"
+      <div>
+        <Modal.Body>
+          { error }
+          <FieldGroup
             id="username"
-            value={ username }
-            onChange={ (e) => this.setState({ username: e.target.value.trim() }) }
+            type="text"
+            label="Username"
+            placeholder="Enter username"
+            value={username}
+            onChange={e => this.setState({ username: e.target.value.trim() })}
+            onKeyPress={this.onKeyPress}
           />
-          <label htmlFor="email">Email</label>
-          <input
+          <FieldGroup
+            id="loginEmail"
             type="email"
-            placeholder="Email"
-            id="email"
-            value={ email }
-            onChange={ (e) => this.setState({ email: e.target.value.trim() }) }
+            label="Email address"
+            placeholder="Enter email"
+            value={email}
+            onChange={e => this.setState({ email: e.target.value.trim() })}
+            onKeyPress={this.onKeyPress}
           />
-          <label htmlFor="password">Password</label>
-          <input
+          <FieldGroup
+            id="loginPassword"
+            label="Password"
             type="password"
-            placeholder="Password"
-            id="password"
-            value={ password }
-            onChange={ (e) => this.setState({ password: e.target.value }) }
+            value={password}
+            onChange={e => this.setState({ password: e.target.value.trim() })}
+            onKeyPress={this.onKeyPress}
           />
-          <button type="submit" className="button button-primary" disabled={ submitted }>
-            { submitted ? <Spinner /> : 'Register' }
-          </button>
-        </form>
-        { error }
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={this.props.onHide}>Cancel</Button>
+          <Button bsStyle="primary" onClick={this.onRegister} disabled={submitted}>
+            Register
+          </Button>
+        </Modal.Footer>
       </div>
     );
   }
-
 }
 
 Register.propTypes = {
-  user: PropTypes.object.isRequired,
-  errorMessage: PropTypes.string
-}
+  onHide: PropTypes.func.isRequired,
+  user: PropTypes.shape({
+    username: PropTypes.string.isRequired,
+    uid: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    md5hash: PropTypes.string.optional,
+  }).isRequired,
+  errorMessage: PropTypes.string,
+};
+
+Register.defaultProps = {
+  errorMessage: null,
+};
 
 export default Register;

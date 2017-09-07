@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import hostNameFromUrl from '../util/hostNameFromUrl';
 
 const PostLink = (props) => {
@@ -10,7 +11,7 @@ const PostLink = (props) => {
 
   return (
     <div className="post-link">
-      <a className="post-title" href={`/post/${props.postId}`}>{props.title}</a>
+      <Link className="post-title" to={`/post/${props.postId}`}>{props.title}</Link>
       <span className="hostname">
         (<a href={url}>{hostNameFromUrl(url)}</a>)
       </span>

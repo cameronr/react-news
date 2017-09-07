@@ -49,7 +49,7 @@ const Actions = Reflux.createActions([
 =============================== */
 
 Actions.login.listen((loginData) => {
-  baseRef.authWithPassword(loginData, (error) => (
+  baseRef.authWithPassword(loginData, error => (
     error ? Actions.modalError(error.code) : Actions.hideModal()
   ));
 });
@@ -89,7 +89,7 @@ Actions.register.listen((username, loginData) => {
 /* Post Actions
 =============================== */
 
-Actions.submitPost.listen(function(post) {
+Actions.submitPost.listen((post) => {
   const newPostRef = postsRef.push(post, (error) => {
     if (error) { return Actions.modalError(error); }
 

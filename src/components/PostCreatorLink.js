@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const PostCreatorLink = ({ creator }) => (
-    <span className="post-info-item">
-        <Link to={ `/user/${creator}` }>{ creator }</Link>
-    </span>
+  <span className="post-info-item">
+    <Link to={`/user/${creator}`}>{ creator }</Link>
+  </span>
 );
 
 PostCreatorLink.propTypes = {
-    creator: PropTypes.string.isRequired
+  creator: PropTypes.string.isRequired,
 };
 
 export default PostCreatorLink;

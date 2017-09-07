@@ -75,7 +75,7 @@ class Login extends React.Component {
             label="Email address"
             placeholder="Enter email"
             value={email}
-            onChange={e => this.setState({ email: e.target.value })}
+            onChange={e => this.setState({ email: e.target.value.trim() })}
             onKeyPress={this.onKeyPress}
           />
           <FieldGroup
@@ -83,7 +83,7 @@ class Login extends React.Component {
             label="Password"
             type="password"
             value={password}
-            onChange={e => this.setState({ password: e.target.value })}
+            onChange={e => this.setState({ password: e.target.value.trim() })}
             onKeyPress={this.onKeyPress}
           />
         </Modal.Body>
