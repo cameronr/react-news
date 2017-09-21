@@ -13,6 +13,11 @@
 
 .post {
   font-size: $font-size-large;
+  position: relative;
+
+  .post-content {
+    margin-left: 100px;
+  }
 }
 
 .post-title {
@@ -24,33 +29,43 @@
 }
 
 .upvote {
-  display: inline-block;
-  color: $dark-gray;
+  position: absolute;
+  top: 50%;
   user-select: none;
   line-height: 1;
+  float: left;
+  width: 80px;
+  transform: translateY(-50%);
 
-  &:hover {
-    text-decoration: none;
-  }
+  a {
+    color: $dark-gray;
 
-  &.updating {
-    opacity: 0.8;
-  }
+    &:hover {
+      text-decoration: none;
+    }
 
-  > * {
-    display: inline-block;
-    vertical-align: middle;
-  }
+    &.updating {
+      opacity: 0.8;
+    }
 
-  svg {
-    width: 12px;
-    height: 12px;
-    margin-left: 3px;
-    fill: $dark-gray;
-  }
+    > * {
+      vertical-align: middle;
+    }
 
-  &.upvoted svg {
-    fill: $upvoted;
+    img {
+      padding-right: 10px;
+    }
+
+    svg {
+      width: 12px;
+      height: 12px;
+      margin-left: 3px;
+      fill: $dark-gray;
+    }
+
+    &.upvoted svg {
+      fill: $upvoted;
+    }
   }
 }
 

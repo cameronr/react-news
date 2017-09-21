@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const PostCreatorLink = ({ creator }) => (
-  <span className="post-info-item">
+  <span>
     <Link to={`/user/${creator}`}>{ creator }</Link>
   </span>
 );

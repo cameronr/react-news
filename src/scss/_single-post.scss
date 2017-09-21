@@ -5,14 +5,21 @@
 
 .single-post {
   .post {
-    padding-bottom: 20px;
+    margin-bottom: 20px;
   }
 
   .post-title {
     font-size: $font-size-large + 4px;
   }
+
 }
 
 .comment {
-    margin: $padding-large-vertical 0;
+  margin: $padding-large-vertical 0;
+  position: relative;
+  margin-left: 20px;
+}
+
+.comment-content {
+  margin-left: 80px;
 }

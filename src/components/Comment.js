@@ -30,29 +30,31 @@ const Comment = (props) => {
 
   return (
     <div className="comment cf divider">
-      <div className="comment-text">
-        { comment.text }
-      </div>
+      <Upvote
+        upvoteActions={upvoteActions}
+        user={user}
+        itemId={comment.id}
+        isUpvoted={!!userUpvoted[comment.id]}
+        upvotes={comment.upvotes || 0}
+      />
+      <div className="comment-content">
+        <div className="comment-text">
+          { comment.text }
+        </div>
 
-      <div className="comment-info">
-        <div className="posted-by">
-          <Upvote
-            upvoteActions={upvoteActions}
-            user={user}
-            itemId={comment.id}
-            isUpvoted={!!userUpvoted[comment.id]}
-            upvotes={comment.upvotes || 0}
-          />
-          <span className="post-info-item">
-            <Link to={`/user/${comment.creator}`}>
-              { comment.creator }
-            </Link>
-          </span>
-          <span className="post-info-item">
-            { timeAgo(comment.time) }
-          </span>
-          { postLink }
-          { deleteOption }
+        <div className="comment-info">
+          <div className="posted-by">
+            <span>
+              <Link to={`/user/${comment.creator}`}>
+                { comment.creator }
+              </Link>
+            </span>
+            <span className="post-info-item">
+              { timeAgo(comment.time) }
+            </span>
+            { postLink }
+            { deleteOption }
+          </div>
         </div>
       </div>
     </div>

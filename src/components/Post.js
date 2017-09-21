@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import PostLink from './PostLink';
 import PostInfo from './PostInfo';
+import Upvote from './Upvote';
+import Actions from '../actions/Actions';
 
 const Post = (props) => {
   const { user, post, showCommentsLink } = props;
@@ -17,10 +19,25 @@ const Post = (props) => {
     );
   }
 
+  const userUpvoted = user.upvoted || {};
+  const upvoteActions = {
+    upvote: Actions.upvotePost,
+    downvote: Actions.downvotePost,
+  };
+
   return (
     <div className="post">
-      <PostLink title={post.title} postId={post.id} url={post.url} />
-      <PostInfo post={post} user={user} showCommentsLink={showCommentsLink} />
+      <Upvote
+        upvoteActions={upvoteActions}
+        user={user}
+        itemId={post.id}
+        isUpvoted={!!userUpvoted[post.id]}
+        upvotes={post.upvotes || 0}
+      />
+      <div className="post-content">
+        <PostLink title={post.title} postId={post.id} url={post.url} />
+        <PostInfo post={post} user={user} showCommentsLink={showCommentsLink} />
+      </div>
     </div>
   );
 };

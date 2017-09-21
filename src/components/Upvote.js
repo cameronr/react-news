@@ -66,10 +66,12 @@ class Upvote extends React.Component {
     });
 
     return (
-      <a className={upvoteCx} onClick={this.upvote} role="button">
-        <span>{ abbreviateNumber(upvotes) }</span>
-        <img src={require('../svg/upvote.svg')} alt="Upvote" />
-      </a>
+      <div className={upvoteCx}>
+        <a onClick={this.upvote} role="button">
+          <img src={require('../svg/upvote.svg')} alt="Upvote" />
+          <span>{ abbreviateNumber(upvotes) }</span>
+        </a>
+      </div>
     );
   }
 }
