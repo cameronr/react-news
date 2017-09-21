@@ -2,7 +2,7 @@ import React from 'react';
 import Reflux from 'reflux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Button, Panel } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import Spinner from 'react-spinner';
 
 import Actions from '../actions/Actions';
@@ -103,10 +103,10 @@ class Profile extends Reflux.Component {
     );
 
     return (
-      <Panel className="profile">
+      <div className="profile">
         <div className="row divider">
           <div className="col-12 col-sm-8">
-            <h1 className="panel-body-top">
+            <h1>
               { `${userProfile}'s` } Profile
             </h1>
           </div>
@@ -122,7 +122,7 @@ class Profile extends Reflux.Component {
           <h3 className="section-header">Comments</h3>
           { commentList }
         </div>
-      </Panel>
+      </div>
     );
   }
 }

@@ -2,7 +2,6 @@ import React from 'react';
 import Reflux from 'reflux';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Panel } from 'react-bootstrap';
 import Spinner from 'react-spinner';
 
 import SingleStore from '../stores/SingleStore';
@@ -77,13 +76,13 @@ class SinglePost extends Reflux.Component {
     }
 
     return (
-      <Panel className="single-post">
+      <div className="single-post">
         { content }
         <CommentForm
           user={user}
           post={post || {}}
         />
-      </Panel>
+      </div>
     );
   }
 }

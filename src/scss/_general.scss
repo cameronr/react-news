@@ -2,7 +2,8 @@
 /* General
 ====================================== */
 
-// h1 { margin-top: 0; }
+h1 { margin-top: 0; }
+
 // h1, h2, h3, h4, h5, h6 {
 //     font-family: $heading-font;
 // }
@@ -63,30 +64,3 @@
 //     }
 // }
 
-.divider {
-  border-bottom: 1px solid #eeeeee;
-  padding-bottom: 10px;
-}
-
-// remove panel spacing / border on mobile
-@media (max-width: 767px) {
-  .container {
-    padding-right: 0;
-    padding-left: 0;
-    border-left: 0;
-    border-right: 0;
-  }
-
-  .panel {
-    border-left: 0;
-    border-right: 0;
-    border-radius: 0;
-  }
-}
-
-// utility class used to snap the signout button below the profile name
-@media (min-width: 768px) {
-  .text-right-sm {
-    text-align: right;
-  }
-}

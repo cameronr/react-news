@@ -102,11 +102,11 @@ class Posts extends Reflux.Component {
 
     return (
       // http://jsfiddle.net/b2m38br9/1/
-      <div className="panel panel-default posts">
-        <div className="panel-heading">
-          <h3 className="panel-title pull-left">
+      <div className="posts">
+        <div>
+          <h1 className="pull-left">
             Posts
-          </h3>
+          </h1>
           <div className="pull-right">
             <DropdownButton
               id="sort-by"
@@ -119,10 +119,10 @@ class Posts extends Reflux.Component {
           </div>
           <div className="clearfix" />
         </div>
-        <ListGroup fill>
+        <ListGroup>
           {loading ? <Spinner /> : postItems}
         </ListGroup>
-        <div className="panel-footer">
+        <div className="post-footer">
           { nextPage ? (
             <Link to={`/posts/${currentPage + 1}`}>
               Load More Posts
