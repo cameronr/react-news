@@ -4,6 +4,7 @@ import cx from 'classnames';
 
 import Actions from '../actions/Actions';
 import abbreviateNumber from '../util/abbreviateNumber';
+import UpvoteIcon from './UpvoteIcon.js';
 
 class Upvote extends React.Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class Upvote extends React.Component {
     return (
       <div className={upvoteCx}>
         <a onClick={this.upvote} role="button">
-          <img src={require('../svg/upvote.svg')} alt="Upvote" />
+          <UpvoteIcon />
           <span>{ abbreviateNumber(upvotes) }</span>
         </a>
       </div>

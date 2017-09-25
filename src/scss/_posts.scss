@@ -52,21 +52,15 @@
     > * {
       vertical-align: middle;
     }
+  }
 
-    img {
-      padding-right: 10px;
-    }
+  svg {
+    margin-right: 10px;
+    fill: $text-muted;
+  }
 
-    svg {
-      width: 12px;
-      height: 12px;
-      margin-left: 3px;
-      fill: $dark-gray;
-    }
-
-    &.upvoted svg {
-      fill: $upvoted;
-    }
+  &.upvoted svg {
+    fill: $brand-success;
   }
 }
 
